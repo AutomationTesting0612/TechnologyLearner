@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        .add-btn {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .add-btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Project Tracker</h2>
+        <a href="{% url 'add_project' %}" class="add-btn">Add New Project</a>
+        
+        <table>
+            <tr>
+                <th>Project Name</th>
+                <th>Leader Name</th>
+                <th>School Name</th>
+                <th>Number of Students</th>
+                <th>Grade</th>
+                <th>Status</th>
+                <th>Payment</th>
+                <th>Payment Date</th>
+                <th>Pending Amount</th>
+                <th>Total Amount</th>
+                <th>Actions</th>
+            </tr>
+            {% for project in projects %}
+            <tr>
+                <td>{{ project.project_name }}</td>
+                <td>{{ project.leader_name }}</td>
+                <td>{{ project.school_name }}</td>
+                <td>{{ project.num_students }}</td>
+                <td>{{ project.grade }}</td>
+                <td>{{ project.status }}</td>
+                <td>{{ project.payment }}</td>
+                <td>{{ project.payment_date }}</td>
+                <td>{{ project.pending_amount }}</td>
+                <td>{{ project.total_amount }}</td>
+                <td>
+                    <a href="{% url 'update_project' project.id %}" class="btn btn-primary">Edit</a>
+                    <form action="{% url 'delete_project' project.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10">No projects found.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
